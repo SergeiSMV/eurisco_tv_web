@@ -1,0 +1,18 @@
+{
+    "name": "Eurisco TV",
+    "short_name": "Eurisco TV",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#0175C2",
+    "theme_color": "#0175C2",
+    "description": "Eurisco TV settings",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        { "src": "/eurisco_favicon.ico", "type": "image/x-icon", "sizes": "16x16 32x32" },
+        { "src": "eurisco_icons/icon-192.png", "type": "image/png", "sizes": "192x192" },
+        { "src": "eurisco_icons/icon-512.png", "type": "image/png", "sizes": "512x512" },
+        { "src": "eurisco_icons/icon-192-maskable.png", "type": "image/png", "sizes": "192x192", "purpose": "maskable" },
+        { "src": "eurisco_icons/icon-512-maskable.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+    ]
+}
