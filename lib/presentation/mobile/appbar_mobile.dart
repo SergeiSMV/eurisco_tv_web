@@ -23,8 +23,22 @@ PreferredSizeWidget appbarMobile(BuildContext context, String deviceID, String d
           onPressed: (){  }, 
           icon: const Icon(
             Icons.edit, 
-            color: Color(0xFF96a0b7), 
-            size: 20,
+            color: Color(0xFF53607b), 
+            // color: darkFirmColor, 
+            size: 22,
+          ),
+          splashRadius: 15, 
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(right: 10),
+        child: IconButton(
+          onPressed: (){  }, 
+          icon: const Icon(
+            Icons.video_call_rounded, 
+            color: Color(0xFF53607b), 
+            // color: darkFirmColor,
+            size: 22,
           ),
           splashRadius: 15,
         ),

@@ -1,12 +1,15 @@
-import 'package:eurisco_tv_web/presentation/auth.dart';
 import 'package:eurisco_tv_web/presentation/mobile/drawer_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
 
 import '../../colors.dart';
 import '../../data/providers.dart';
+import '../../globals.dart';
 import 'appbar_mobile.dart';
+import 'content_mobile.dart';
+import 'empty_config.dart';
 
 class MainMobile extends ConsumerStatefulWidget {
   const MainMobile({super.key});
@@ -17,8 +20,12 @@ class MainMobile extends ConsumerStatefulWidget {
 
 class _MainMobileState extends ConsumerState<MainMobile> {
 
+  bool isMobile = GetPlatform.isMobile;
+
   @override
   Widget build(BuildContext context) {
+
+    log.d(isMobile.toString());
 
     final webConfig = ref.watch(getWebConfigProvider);
     // ignore: unused_local_variable
@@ -36,65 +43,13 @@ class _MainMobileState extends ConsumerState<MainMobile> {
           return Consumer(
             builder: (context, ref, child) {
               return webConfig.when(
-                loading: () => const Center(child: CircularProgressIndicator(strokeWidth: 1.0,)),
-                error: (error, _) => Text(error.toString()),
+                loading: () => Center(child: CircularProgressIndicator(strokeWidth: 2.0, color: darkFirmColor,)),
+                error: (error, _) => Center(child: Text(error.toString())),
                 data: (data){
 
                   final allConfigs = ref.watch(configProvider);
                   
-
-                  return allConfigs.isEmpty ?
-                  
-                  Scaffold(
-                    appBar: AppBar(
-                      iconTheme: IconThemeData(color: firmColor),
-                      backgroundColor: const Color(0xFFe3efff),
-                      elevation: 0,
-                    ),
-                    drawer: drawerMobile(context),
-                    body: Container(
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          opacity: 0.1,
-                          image: AssetImage('lib/images/background.jpg'),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: Image.asset('lib/images/empty_box.png', scale: 3.0,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 20),
-                              child: Text('доступных устройств\nне найдено', style: darkFirm14, textAlign: TextAlign.center,),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(left: 35, right: 35),
-                              child: InkWell(
-                                onTap: () { },
-                                child: Container(
-                                  decoration: BoxDecoration(color: firmColor, borderRadius: BorderRadius.circular(5)),
-                                  height: 35,
-                                  width: 180,
-                                  child: Center(
-                                    child: Text('добавить', style: white14)
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )),
-                    ),
-                  )
-
-                  :
-                  
+                  return allConfigs.isEmpty ? emptyConfig(context) :
                   Builder(
                     builder: (context) {
 
@@ -106,6 +61,7 @@ class _MainMobileState extends ConsumerState<MainMobile> {
                       String deviceName = deviceINFO['name'];
 
                       return Scaffold(
+                        backgroundColor: Colors.white,
                         appBar: appbarMobile(context, deviceID, deviceName),
                         drawer: drawerMobile(context),
                         body: Container(
@@ -113,12 +69,15 @@ class _MainMobileState extends ConsumerState<MainMobile> {
                           width: MediaQuery.of(context).size.width,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              opacity: 0.5,
+                              opacity: 0.1,
                               image: AssetImage('lib/images/background.jpg'),
                               fit: BoxFit.cover,
                             ),
                           ),
-                          child: Center(
+                          child: const ContentMobile()
+                          
+                          /*
+                          Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +90,8 @@ class _MainMobileState extends ConsumerState<MainMobile> {
                               ],
                             ),
                           ),
-                        ),
+                          */
+                        )
                       );
                     }
                   );

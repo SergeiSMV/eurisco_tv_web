@@ -145,8 +145,6 @@ class _AuthState extends State<Auth> {
                     
                         const SizedBox(height: 20),
 
-
-                    
                         // кнопка входа
                         loginController.text.isEmpty || passController.text.isEmpty ? const SizedBox.shrink() :
                         Padding(

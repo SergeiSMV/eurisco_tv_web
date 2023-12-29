@@ -9,6 +9,7 @@ import 'presentation/mobile/main_mobile.dart';
 import 'presentation/web_main.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('hiveStorage');
   Map authData = await HiveImpl().getAuthData();

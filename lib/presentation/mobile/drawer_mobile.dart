@@ -15,79 +15,62 @@ Widget drawerMobile(BuildContext mainContext){
       builder: (context, ref, child) {
 
         final allConfigs = ref.watch(configProvider);
-        
 
         return allConfigs.isEmpty ?
-
-
         Drawer(
-              backgroundColor: const Color(0xFFf2f6ff),
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, left: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        children: [
-                          const Expanded(child: SizedBox()),
-                          Opacity(opacity: 0.4, child: Image.asset('lib/images/eurisco_tv.png', scale: 4.5)),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15),
-                      child: Row(
-                        children: [
-                          Image.asset('lib/images/wrench.png', scale: 5.0,),
-                          const Flexible(
-                            child: Divider(color: Color(0xFF96a0b7), height: 30, endIndent: 30, indent: 10,),
-                          )
-                        ],
-                      ),
-                      //  Text('доступные устройства', style: firm13,),
-                    ),
-
-
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10, right: 30),
-                      child: InkWell(
-                        onTap: (){ Navigator.pop(mainContext); },
-                        child: _drawerButton('добавить', Icons.add),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10, right: 30),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(mainContext).pushReplacement(MaterialPageRoute(builder: (context) => const Auth()));
-                          HiveImpl().saveAuthData({});
-                        },
-                        child: _drawerButton('выйти', Icons.exit_to_app_outlined),
-                      ),
-                    ),
-                  ],
+          backgroundColor: const Color(0xFFf2f6ff),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10, left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Row(
+                    children: [
+                      const Expanded(child: SizedBox()),
+                      Opacity(opacity: 0.4, child: Image.asset('lib/images/eurisco_tv.png', scale: 4.5)),
+                    ],
+                  ),
                 ),
-              ),
-            ) 
-
-
-            :
-
-
-
-
-
-        
-        
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 15),
+                  child: Row(
+                    children: [
+                      Image.asset('lib/images/wrench.png', scale: 5.0,),
+                      const Flexible(
+                        child: Divider(color: Color(0xFF96a0b7), height: 30, endIndent: 30, indent: 10,),
+                      )
+                    ],
+                  ),
+                  //  Text('доступные устройства', style: firm13,),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10, right: 30),
+                  child: InkWell(
+                    onTap: (){ Navigator.pop(mainContext); },
+                    child: _drawerButton('добавить', Icons.add),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 10, right: 30),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.of(mainContext).pushReplacement(MaterialPageRoute(builder: (context) => const Auth()));
+                      HiveImpl().saveAuthData({});
+                    },
+                    child: _drawerButton('выйти', Icons.exit_to_app_outlined),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ) 
+        :
         Builder(
           builder: (context) {
-
             List devices = allConfigs.keys.toList();
-
             return Drawer(
               backgroundColor: const Color(0xFFf2f6ff),
               child: Padding(
@@ -96,7 +79,6 @@ Widget drawerMobile(BuildContext mainContext){
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: Row(
@@ -106,7 +88,6 @@ Widget drawerMobile(BuildContext mainContext){
                         ],
                       ),
                     ),
-                    
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
@@ -118,7 +99,6 @@ Widget drawerMobile(BuildContext mainContext){
                         ],
                       ),
                     ),
-                
                     Flexible(
                       child: GlowingOverscrollIndicator(
                         showLeading: false,
@@ -133,7 +113,6 @@ Widget drawerMobile(BuildContext mainContext){
                             Map deviceINFO = allConfigs[devices[index]];
                             String deviceID = devices[index];
                             String deviceName = deviceINFO['name'];
-                      
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 10, right: 30),
                               child: InkWell(
@@ -148,7 +127,6 @@ Widget drawerMobile(BuildContext mainContext){
                         ),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 15),
                       child: Row(
@@ -161,8 +139,6 @@ Widget drawerMobile(BuildContext mainContext){
                       ),
                       //  Text('доступные устройства', style: firm13,),
                     ),
-
-
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10, right: 30),
                       child: InkWell(
