@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../../colors.dart';
 
 PreferredSizeWidget appbarMobile(BuildContext context, String deviceID, String deviceName){
+  String deviceHint = deviceID == 'общая настройка' ? '' : 'id: ';
+  String nameHint = deviceName == 'для всех устройств' ? '' : 'имя: ';
   return AppBar(
     titleSpacing: 0,
     iconTheme: IconThemeData(color: firmColor),
@@ -12,8 +14,8 @@ PreferredSizeWidget appbarMobile(BuildContext context, String deviceID, String d
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('id: $deviceID', style: darkFirm14,),
-        Text('имя: $deviceName', style: darkFirm13,),
+        Text('$deviceHint$deviceID', style: darkFirm14,),
+        Text('$nameHint$deviceName', style: darkFirm13,),
       ],
     ),
     actions: [
@@ -25,7 +27,7 @@ PreferredSizeWidget appbarMobile(BuildContext context, String deviceID, String d
             Icons.edit, 
             color: Color(0xFF53607b), 
             // color: darkFirmColor, 
-            size: 22,
+            size: 23,
           ),
           splashRadius: 15, 
         ),
@@ -38,7 +40,7 @@ PreferredSizeWidget appbarMobile(BuildContext context, String deviceID, String d
             Icons.video_call_rounded, 
             color: Color(0xFF53607b), 
             // color: darkFirmColor,
-            size: 22,
+            size: 24,
           ),
           splashRadius: 15,
         ),

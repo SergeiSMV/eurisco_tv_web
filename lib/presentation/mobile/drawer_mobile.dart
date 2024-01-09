@@ -44,7 +44,6 @@ Widget drawerMobile(BuildContext mainContext){
                       )
                     ],
                   ),
-                  //  Text('доступные устройства', style: firm13,),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10, right: 30),
@@ -143,7 +142,7 @@ Widget drawerMobile(BuildContext mainContext){
                       padding: const EdgeInsets.only(bottom: 10, right: 30),
                       child: InkWell(
                         onTap: (){ Navigator.pop(mainContext); },
-                        child: _drawerButton('добавить', Icons.add),
+                        child: _drawerButton('добавить устройство', Icons.add),
                       ),
                     ),
                     Padding(
@@ -169,6 +168,8 @@ Widget drawerMobile(BuildContext mainContext){
 
 
 Widget _drawerDevice(String device, String name){
+    String deviceHint = device == 'общая настройка' ? '' : 'id: ';
+    String nameHint = name == 'для всех устройств' ? '' : 'имя: ';
     return Container(
       decoration: BoxDecoration(
         // color: Colors.white,
@@ -189,8 +190,8 @@ Widget _drawerDevice(String device, String name){
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('id: $device', style: firm14,),
-            Text('имя: $name', style: firm12,),
+            Text('$deviceHint$device', style: firm14,),
+            Text('$nameHint$name', style: firm12,),
           ],
         ),
       ),

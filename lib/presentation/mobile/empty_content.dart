@@ -3,13 +3,8 @@ import 'package:flutter/material.dart';
 import '../../colors.dart';
 import 'drawer_mobile.dart';
 
-Widget emptyConfig(BuildContext context){
+Widget emptyContent(BuildContext context){
   return Scaffold(
-    appBar: AppBar(
-      iconTheme: IconThemeData(color: firmColor),
-      backgroundColor: const Color(0xFFe3efff),
-      elevation: 0,
-    ),
     drawer: drawerMobile(context),
     body: Container(
       height: MediaQuery.of(context).size.height,
@@ -31,21 +26,7 @@ Widget emptyConfig(BuildContext context){
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 20),
-              child: Text('доступных устройств\nне найдено', style: darkFirm14, textAlign: TextAlign.center,),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 35, right: 35),
-              child: InkWell(
-                onTap: () { },
-                child: Container(
-                  decoration: BoxDecoration(color: firmColor, borderRadius: BorderRadius.circular(5)),
-                  height: 35,
-                  width: 180,
-                  child: Center(
-                    child: Text('добавить', style: white14)
-                  ),
-                ),
-              ),
+              child: Text('отсутствует контент', style: darkFirm14, textAlign: TextAlign.center,),
             ),
           ],
         )),

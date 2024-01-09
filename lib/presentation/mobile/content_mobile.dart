@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 
 import '../../colors.dart';
 import '../../data/providers.dart';
+import 'empty_content.dart';
 
 
 class ContentMobile extends ConsumerStatefulWidget {
@@ -45,7 +46,8 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
         final deviceId = ref.watch(deviceIdProvider);
         List deviceConfig = allConfigs[deviceId]['content'];
 
-        return Padding(
+        return deviceConfig.isEmpty ? emptyContent(context) :
+         Padding(
           padding: const EdgeInsets.all(10),
           child: ListView.builder(
             physics: const BouncingScrollPhysics(),
@@ -55,10 +57,6 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
             itemBuilder: (context, index){
               
               String extention = deviceConfig[index]['name'].split('.')[1];
-              // String duration = deviceConfig[index]['duration'].toString();
-              // String periodic = deviceConfig[index]['start'] == '00:00' && deviceConfig[index]['end'] == '23:59' ?
-                // 'круглосуточно' : 'с ${deviceConfig[index]['start']} до ${deviceConfig[index]['end']}';
-              // String fileName = deviceConfig[index]['name'].split('.')[0].toString();
               String fileName = deviceConfig[index]['name'].toString();
               bool show = deviceConfig[index]['show'];
 

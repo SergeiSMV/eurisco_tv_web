@@ -25,7 +25,7 @@ class _MainMobileState extends ConsumerState<MainMobile> {
   @override
   Widget build(BuildContext context) {
 
-    log.d(isMobile.toString());
+    // log.d(isMobile.toString());
 
     final webConfig = ref.watch(getWebConfigProvider);
     // ignore: unused_local_variable
