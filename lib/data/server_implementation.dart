@@ -3,10 +3,14 @@ import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../domain/server_repository.dart';
 import '../domain/server_values.dart';
+import '../globals.dart';
 import 'hive_implementation.dart';
+import 'providers.dart';
 
 
 class ServerImpl extends ServerRepository{
@@ -101,6 +105,27 @@ class ServerImpl extends ServerRepository{
     responce.data is String ? result = responce.toString() : result = 'failed';
 
     return result;
+  }
+
+  // подключение к websocket
+  @override
+  Future<void> websocketConnect(WebSocketChannel channel, WidgetRef ref) async {
+    Map authData = await HiveImpl().getAuthData();
+    String client = authData['login'];
+    dynamic result;
+
+    channel.sink.add(client);
+    channel.stream.listen((value) {
+      result = jsonDecode(value);
+      // ignore: unused_result
+      result == 'update' ? ref.refresh(getWebConfigProvider) : null;
+    });
+  }
+
+  // отключение от websocket
+  @override
+  Future<void> websocketDisconnect(WebSocketChannel channel) async {
+    channel.sink.close();
   }
   
 }

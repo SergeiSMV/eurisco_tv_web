@@ -1,6 +1,8 @@
 
 // https://fluthon.space/develop/auth
 
+String ws = 'wss://fluthon.space/develop/ws';
+
 // главный сервер
 String server = 'https://fluthon.space/develop';
 // авторизация 

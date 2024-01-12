@@ -1,11 +1,14 @@
+import 'package:eurisco_tv_web/data/server_implementation.dart';
 import 'package:eurisco_tv_web/presentation/mobile/drawer_mobile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../colors.dart';
 import '../../data/providers.dart';
+import '../../domain/server_values.dart';
 import 'appbar_mobile.dart';
 import 'content_mobile.dart';
 import 'empty_config.dart';
@@ -20,6 +23,20 @@ class MainMobile extends ConsumerStatefulWidget {
 class _MainMobileState extends ConsumerState<MainMobile> {
 
   bool isMobile = GetPlatform.isMobile;
+  late WebSocketChannel wsCnannel;
+
+  @override
+  void initState() {
+    super.initState();
+    wsCnannel = WebSocketChannel.connect(Uri.parse(ws));
+    ServerImpl().websocketConnect(wsCnannel, ref);
+  }
+
+  @override
+  void dispose() async {
+    super.dispose();
+    ServerImpl().websocketDisconnect(wsCnannel);
+  }
 
   @override
   Widget build(BuildContext context) {

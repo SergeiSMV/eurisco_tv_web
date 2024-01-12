@@ -1,7 +1,6 @@
 import 'package:eurisco_tv_web/data/config_implementation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../globals.dart';
 import 'server_implementation.dart';
 
 
@@ -19,7 +18,6 @@ final contentIndexProvider = StateProvider((ref) {
 
 final getWebConfigProvider = FutureProvider((ref) async {
   Map config = await ServerImpl().getWebConfig();
-  log.d('config.length: ${config.length}');
   config.length > 1 ? 
     ref.read(configProvider.notifier).state = ConfigImpl().addGlobalSettings(config) :
     ref.read(configProvider.notifier).state = config;

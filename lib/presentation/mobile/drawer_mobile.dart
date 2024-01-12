@@ -142,6 +142,13 @@ Widget drawerMobile(BuildContext mainContext){
                       padding: const EdgeInsets.only(bottom: 10, right: 30),
                       child: InkWell(
                         onTap: (){ Navigator.pop(mainContext); },
+                        child: _drawerButton('добавить контент', Icons.add),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10, right: 30),
+                      child: InkWell(
+                        onTap: (){ Navigator.pop(mainContext); },
                         child: _drawerButton('добавить устройство', Icons.add),
                       ),
                     ),

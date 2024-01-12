@@ -16,6 +16,7 @@ void main() async {
   runApp(ProviderScope(child: App(authData: authData,)));
 }
 
+
 class App extends StatelessWidget {
   final Map authData;
   const App({Key? key, required this.authData}) : super(key: key);
@@ -49,3 +50,29 @@ Widget authRouter(Map authData){
   }
   return router;
 }
+
+/*
+Future request(Map authData) async {
+  bool isConnected = true;
+  WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(ws));
+  await channel.ready.onError((error, stackTrace) => isConnected = false);
+
+  if(isConnected == false){
+    return 'сервер отключен';
+  } else {
+    try{
+      dynamic result;
+      channel.sink.add(jsonEncode('hello websocket'));
+      await channel.stream.single.then((value) {
+        result = jsonDecode(value);
+        return result;
+      });
+      return result;
+    } on Error catch (_){
+      return '$_ (server ERROR)';
+    } on Exception catch (_){
+      return '$_ (server EXCEPTION)';
+    }
+  }
+}
+*/

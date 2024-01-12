@@ -13,7 +13,7 @@ class ConfigModel with _$ConfigModel {
 
   factory ConfigModel.fromJson(Map<String, dynamic> json) => _$ConfigModelFromJson(json);
 
-  String get name => configModel['name'];
+  // String get name => configModel['name'];
   int get duration => configModel['duration'];
   bool get show => configModel['show'];
   String get startTime => configModel['start_time'];

@@ -38,13 +38,12 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
   @override
   Widget build(BuildContext context) {
 
-    // log.d(MediaQuery.of(context).size.width.toString());
-
     return Consumer(
       builder: (context, ref, child){
         final allConfigs = ref.watch(configProvider);
+
         final deviceId = ref.watch(deviceIdProvider);
-        List deviceConfig = allConfigs[deviceId]['content'];
+        Map deviceConfig = allConfigs[deviceId]['content'];
 
         return deviceConfig.isEmpty ? emptyContent(context) :
          Padding(
@@ -56,8 +55,11 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
             itemCount: deviceConfig.length,
             itemBuilder: (context, index){
 
-              ConfigModel config = ConfigModel(configModel: deviceConfig[index]);
-              String extention = config.name.split('.')[1];
+              String name = deviceConfig.keys.elementAt(index);
+              Map<String, dynamic> value = deviceConfig[name];
+
+              ConfigModel config = ConfigModel(configModel: value);
+              String extention = name.split('.')[1];
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -75,7 +77,7 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                               aspectRatio: 16.0 / 9.0,
                               child: FittedBox(
                                 fit: BoxFit.fill,
-                                child: Image.network(deviceConfig[index]['preview'])
+                                child: Image.network(config.preview)
                               )
                             ),
 
@@ -94,7 +96,7 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                                 fit: BoxFit.fitWidth,
                                 child: Icon(
                                   Icons.lock,
-                                  size: 50,
+                                  size: 30,
                                   color: Colors.redAccent,
                                 ),
                               ),
@@ -104,7 +106,7 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                               child: InkWell(
                                 onTap: (){ 
                                   bool isImage = extention == 'mp4' ? false : true;
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,)));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebFullScreenPreview(link: config.stream, isImage: isImage,)));
                                 },
                                 child: CircleAvatar(
                                   radius: 30,
@@ -143,7 +145,7 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                           child: Row(
                             children: [
                               const SizedBox(width: 5,),
-                              Expanded(child: Text(config.name, style: darkFirm13, overflow: TextOverflow.fade, maxLines: 1,)),
+                              Expanded(child: Text(name, style: darkFirm13, overflow: TextOverflow.fade, maxLines: 1,)),
                               IconButton(
                                 onPressed: (){
                                   // editDialog(context, index, durController, startController, endController);
