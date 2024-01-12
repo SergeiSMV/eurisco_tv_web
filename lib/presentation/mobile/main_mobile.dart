@@ -6,7 +6,6 @@ import 'package:get/get_utils/src/platform/platform.dart';
 
 import '../../colors.dart';
 import '../../data/providers.dart';
-import '../../globals.dart';
 import 'appbar_mobile.dart';
 import 'content_mobile.dart';
 import 'empty_config.dart';
@@ -75,22 +74,6 @@ class _MainMobileState extends ConsumerState<MainMobile> {
                             ),
                           ),
                           child: const ContentMobile()
-                          
-                          /*
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                const Text('Main Mobile'),
-                                const SizedBox(height: 20,),
-                                TextButton(onPressed: (){ 
-                                  Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const Auth()));
-                                }, child: const Text('to Auth'))
-                              ],
-                            ),
-                          ),
-                          */
                         )
                       );
                     }

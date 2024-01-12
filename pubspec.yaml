@@ -49,6 +49,9 @@ dependencies:
   get: ^4.6.6
   google_fonts: ^6.1.0
   logger: ^2.0.2+1
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.8.1
+  dart_amqp: ^0.2.5
 
 
 dev_dependencies:
@@ -61,6 +64,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.7
+  freezed: ^2.4.5
+  json_serializable: ^6.7.1
 
 flutter_native_splash:
   image: lib/images/splash_screen.png
@@ -134,3 +140,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+# for actiavation rps 'dart pub global activate rps'
+# example 'rps build_freezed'
+scripts:
+  build_freezed: flutter pub run build_runner build --delete-conflicting-outputs
+  build_riverpod: dart pub run build_runner build --delete-conflicting-outputs
+  build: flutter pub run build_runner build
+  watch: flutter pub run build_runner watch

@@ -1,10 +1,10 @@
-import 'package:eurisco_tv_web/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
 
 import '../../colors.dart';
 import '../../data/providers.dart';
+import '../../domain/config_model/config_model.dart';
+import '../web_fullscreenpreview.dart';
 import 'empty_content.dart';
 
 
@@ -55,10 +55,9 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
             shrinkWrap: true,
             itemCount: deviceConfig.length,
             itemBuilder: (context, index){
-              
-              String extention = deviceConfig[index]['name'].split('.')[1];
-              String fileName = deviceConfig[index]['name'].toString();
-              bool show = deviceConfig[index]['show'];
+
+              ConfigModel config = ConfigModel(configModel: deviceConfig[index]);
+              String extention = config.name.split('.')[1];
 
               return Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -80,14 +79,14 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                               )
                             ),
 
-                            show ? const SizedBox.shrink() :
+                            config.show ? const SizedBox.shrink() :
                             Positioned.fill(
                               child: Container(
                                 color: Colors.black.withOpacity(0.7),
                               )
                             ),
 
-                            show ? const SizedBox.shrink() :
+                            config.show ? const SizedBox.shrink() :
                             const Positioned(
                               left: 20,
                               top: 20,
@@ -104,9 +103,8 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                             Center(
                               child: InkWell(
                                 onTap: (){ 
-                                  // bool isImage = extention == 'mp4' ? false : true;
-                                  // Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,)));
-                                  // WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,);
+                                  bool isImage = extention == 'mp4' ? false : true;
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,)));
                                 },
                                 child: CircleAvatar(
                                   radius: 30,
@@ -145,7 +143,7 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                           child: Row(
                             children: [
                               const SizedBox(width: 5,),
-                              Expanded(child: Text(fileName, style: darkFirm13, overflow: TextOverflow.fade, maxLines: 1,)),
+                              Expanded(child: Text(config.name, style: darkFirm13, overflow: TextOverflow.fade, maxLines: 1,)),
                               IconButton(
                                 onPressed: (){
                                   // editDialog(context, index, durController, startController, endController);

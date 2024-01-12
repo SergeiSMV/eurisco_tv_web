@@ -53,31 +53,35 @@ class _WebFullScreenPreviewState extends State<WebFullScreenPreview> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: widget.isImage ? 
-        SizedBox(
-          height: MediaQuery.of(context).size.width,
-          width: MediaQuery.of(context).size.width,
-          child: Image.network(
-            widget.link,
-            fit: BoxFit.contain,
-            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-              if (loadingProgress == null) return child;
-              return Center(
-                child: CircularProgressIndicator(
-                  value: loadingProgress.expectedTotalBytes != null
-                      ? loadingProgress.cumulativeBytesLoaded /
-                          loadingProgress.expectedTotalBytes!
-                      : null,
-                ),
-              );
-            },
+        Center(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+            child: Image.network(
+              widget.link,
+              fit: BoxFit.contain,
+              loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+            ),
           ),
         ) :
-        SizedBox(
-          height: MediaQuery.of(context).size.width,
-          width: MediaQuery.of(context).size.width,
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: VideoPlayer(_controller),
+        Center(
+          child: SizedBox(
+            height: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
+            child: AspectRatio(
+              aspectRatio: 16 / 9,
+              child: VideoPlayer(_controller),
+            ),
           ),
         )
     );

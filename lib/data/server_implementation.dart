@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
@@ -100,10 +99,8 @@ class ServerImpl extends ServerRepository{
 
     var responce = await dio.post(serverUpload, data: formData, queryParameters: {'user': authData['login']});
     responce.data is String ? result = responce.toString() : result = 'failed';
-    log('responce: $responce');
 
     return result;
   }
-
   
 }

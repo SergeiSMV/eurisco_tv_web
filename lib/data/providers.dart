@@ -19,7 +19,7 @@ final contentIndexProvider = StateProvider((ref) {
 
 final getWebConfigProvider = FutureProvider((ref) async {
   Map config = await ServerImpl().getWebConfig();
-  log.d(config.length);
+  log.d('config.length: ${config.length}');
   config.length > 1 ? 
     ref.read(configProvider.notifier).state = ConfigImpl().addGlobalSettings(config) :
     ref.read(configProvider.notifier).state = config;
