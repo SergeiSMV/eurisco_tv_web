@@ -21,7 +21,7 @@ class MainMobile extends ConsumerStatefulWidget {
 }
 
 class _MainMobileState extends ConsumerState<MainMobile> {
-
+  
   bool isMobile = GetPlatform.isMobile;
   late WebSocketChannel wsCnannel;
 
@@ -49,12 +49,15 @@ class _MainMobileState extends ConsumerState<MainMobile> {
 
     return ProgressHUD(
       barrierColor: Colors.white.withOpacity(0.7),
+      borderColor: Colors.transparent,
+      // backgroundColor: Colors.transparent,
       padding: const EdgeInsets.all(20.0),
       child: Builder(
-        builder: (context) {
+        builder: (progressHUDcontext) {
 
+          
           // ignore: unused_local_variable
-          final progress = ProgressHUD.of(context);
+          final progress = ProgressHUD.of(progressHUDcontext);
 
           return Consumer(
             builder: (context, ref, child) {

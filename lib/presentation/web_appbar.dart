@@ -72,20 +72,25 @@ class _WebAppBarState extends ConsumerState<WebAppBar> {
             // width: 300,
             child: Padding(
               padding: const EdgeInsets.only(left: 8, right: 8),
-              child: TextButton(onPressed: () async {
-                final progress = ProgressHUD.of(widget.mainContext);
-                FilePickerResult? picked = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['mp4', 'jpg', 'jpeg'], allowMultiple: false, withData: true);
-                if (picked != null) {
-                  progress?.showWithText('гномы потащили\nфайл на сервер');
-                  String result = await ServerImpl().uploadFile(picked);
-                  if (result == 'done'){
-                    progress?.dismiss();
-                    return ref.refresh(getWebConfigProvider);
-                  } else {
-                    progress?.dismiss();
+              child: TextButton(
+                onPressed: () async {
+                  /*
+                  final progress = ProgressHUD.of(widget.mainContext);
+                  FilePickerResult? picked = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['mp4', 'jpg', 'jpeg'], allowMultiple: false, withData: true);
+                  if (picked != null) {
+                    progress?.showWithText('гномы потащили\nфайл на сервер');
+                    String result = await ServerImpl().uploadFile(picked);
+                    if (result == 'done'){
+                      progress?.dismiss();
+                      return ref.refresh(getWebConfigProvider);
+                    } else {
+                      progress?.dismiss();
+                    }
                   }
-                }
-              }, child: Text('добавить', style: white14,),),
+                  */
+                }, 
+                child: Text('добавить', style: white14,),
+              ),
             ),
           ),
         ],

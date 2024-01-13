@@ -1,4 +1,4 @@
-import 'package:file_picker/file_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
@@ -14,12 +14,18 @@ abstract class ServerRepository{
   Future<void> saveConfig(Map newConfig);
 
   // загрузить файл на сервер
-  Future<String> uploadFile(FilePickerResult picked);
+  Future<String> sendFileToServer(FormData formData);
 
   // подключение к websocket
   Future<void> websocketConnect(WebSocketChannel channel, WidgetRef ref);
 
   // отключение от websocket
   Future<void> websocketDisconnect(WebSocketChannel channel);
+
+  // переименовать устройство
+  Future<String> renameDevice(String newName, String deviceID);
+
+  // запрос рассылки обновленной конфигурации
+  Future<void> broadcast();
 
 }

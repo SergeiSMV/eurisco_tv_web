@@ -76,7 +76,8 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                             AspectRatio(
                               aspectRatio: 16.0 / 9.0,
                               child: FittedBox(
-                                fit: BoxFit.fill,
+                                clipBehavior: Clip.antiAlias,
+                                fit: BoxFit.cover,
                                 child: Image.network(config.preview)
                               )
                             ),
@@ -144,14 +145,21 @@ class _ContentMobileState extends ConsumerState<ContentMobile> {
                           padding: const EdgeInsets.all(8.0),
                           child: Row(
                             children: [
-                              const SizedBox(width: 5,),
-                              Expanded(child: Text(name, style: darkFirm13, overflow: TextOverflow.fade, maxLines: 1,)),
+                              const SizedBox(width: 10,),
+                              Expanded(
+                                child: Text(name, 
+                                style: darkFirm13, 
+                                overflow: TextOverflow.ellipsis, 
+                                maxLines: 1,
+                              )
+                              ),
                               IconButton(
                                 onPressed: (){
                                   // editDialog(context, index, durController, startController, endController);
                                 }, 
                                 icon: Icon(
                                   Icons.more_vert,
+                                  // Icons.settings,
                                   size: 25,
                                   color: firmColor,
                                 ),

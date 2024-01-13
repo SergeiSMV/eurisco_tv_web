@@ -1,14 +1,11 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../domain/server_repository.dart';
 import '../domain/server_values.dart';
-import '../globals.dart';
 import 'hive_implementation.dart';
 import 'providers.dart';
 
@@ -91,20 +88,10 @@ class ServerImpl extends ServerRepository{
 
   // загрузить файл на сервер
   @override
-  Future<String> uploadFile(FilePickerResult picked) async {
-    String result;
+  Future<String> sendFileToServer(FormData formData) async {
     Map authData = await HiveImpl().getAuthData();
-    Uint8List fileBytes = picked.files.first.bytes!;
-    String fileName = picked.files.first.name;
-
-    FormData formData = FormData.fromMap({
-      'file': MultipartFile.fromBytes(fileBytes, filename: fileName),
-    });
-
-    var responce = await dio.post(serverUpload, data: formData, queryParameters: {'user': authData['login']});
-    responce.data is String ? result = responce.toString() : result = 'failed';
-
-    return result;
+    var result = await dio.post(serverUpload, data: formData, queryParameters: {'user': authData['login']});
+    return result.data is String ? result.data : '';
   }
 
   // подключение к websocket
@@ -126,6 +113,24 @@ class ServerImpl extends ServerRepository{
   @override
   Future<void> websocketDisconnect(WebSocketChannel channel) async {
     channel.sink.close();
+  }
+
+  // переименовать устройство
+  @override
+  Future<String> renameDevice(String newName, String deviceID) async {
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    var result = await dio.post(serverRenameDevice, queryParameters: {'user': user, 'name': newName, 'device_id': deviceID,});
+    // result.data == 'done' ? broadcast() : null;
+    return result.data == 'done' ? 'Имя успешно изменено' : 'Ошибка сохранения';
+  }
+
+  // запрос рассылки обновленной конфигурации
+  @override
+  Future<void> broadcast() async {
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    await dio.post(serverBroadcast, queryParameters: {'client': user,});
   }
   
 }

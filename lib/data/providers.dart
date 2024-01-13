@@ -12,6 +12,10 @@ final deviceIdProvider = StateProvider((ref) {
   return '';
 });
 
+final deviceRenameProvider = StateProvider((ref) {
+  return '';
+});
+
 final contentIndexProvider = StateProvider((ref) {
   return 0;
 });
