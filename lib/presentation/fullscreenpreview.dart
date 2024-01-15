@@ -1,21 +1,18 @@
-
-
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class WebFullScreenPreview extends StatefulWidget {
+class FullScreenPreview extends StatefulWidget {
   final bool isImage;
   final String link;
-  const WebFullScreenPreview({super.key, required this.isImage, required this.link});
+  const FullScreenPreview({super.key, required this.isImage, required this.link});
 
   @override
-  State<WebFullScreenPreview> createState() => _WebFullScreenPreviewState();
+  State<FullScreenPreview> createState() => _FullScreenPreviewState();
 }
 
-class _WebFullScreenPreviewState extends State<WebFullScreenPreview> {
+class _FullScreenPreviewState extends State<FullScreenPreview> {
 
   late VideoPlayerController _controller;
 

@@ -9,9 +9,11 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 import '../../colors.dart';
 import '../../data/providers.dart';
 import '../../domain/server_values.dart';
+import '../../globals.dart';
 import 'appbar_mobile.dart';
-import 'content_mobile.dart';
+import '../views/low_width/lw_content_view.dart';
 import 'empty_config.dart';
+import '../views/high_width/hw_content_view.dart';
 
 class MainMobile extends ConsumerStatefulWidget {
   const MainMobile({super.key});
@@ -35,17 +37,19 @@ class _MainMobileState extends ConsumerState<MainMobile> {
   @override
   void dispose() async {
     super.dispose();
+    log.d('dispose from MainMobile');
     ServerImpl().websocketDisconnect(wsCnannel);
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
 
-    // log.d(isMobile.toString());
-
     final webConfig = ref.watch(getWebConfigProvider);
     // ignore: unused_local_variable
     final messenger = ScaffoldMessenger.of(context);
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return ProgressHUD(
       barrierColor: Colors.white.withOpacity(0.7),
@@ -93,7 +97,7 @@ class _MainMobileState extends ConsumerState<MainMobile> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          child: const ContentMobile()
+                          child: screenWidth > screenWidthParam ? const HighWidthContentView() : const LowWidthContentView()
                         )
                       );
                     }

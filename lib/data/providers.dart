@@ -1,6 +1,7 @@
 import 'package:eurisco_tv_web/data/config_implementation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../globals.dart';
 import 'server_implementation.dart';
 
 
@@ -25,5 +26,6 @@ final getWebConfigProvider = FutureProvider((ref) async {
   config.length > 1 ? 
     ref.read(configProvider.notifier).state = ConfigImpl().addGlobalSettings(config) :
     ref.read(configProvider.notifier).state = config;
-  config.isEmpty || config is List ? null : ref.read(deviceIdProvider.notifier).state = config.keys.toList().first;
+  final finalConfig = ref.read(configProvider);
+  config.isEmpty || config is List ? null : ref.read(deviceIdProvider.notifier).state = finalConfig.keys.toList().first;
 });

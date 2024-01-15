@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../colors.dart';
-import '../data/providers.dart';
+import '../../colors.dart';
+import '../../data/providers.dart';
 
 class WebDevicePannel extends ConsumerWidget {
   const WebDevicePannel({super.key});

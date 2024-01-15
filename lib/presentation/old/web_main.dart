@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../data/providers.dart';
+import '../../data/providers.dart';
 import 'web_appbar.dart';
 import 'web_deviceconfig.dart';
 import 'web_devicename.dart';

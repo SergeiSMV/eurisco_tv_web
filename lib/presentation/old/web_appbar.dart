@@ -1,14 +1,10 @@
 import 'dart:async';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../colors.dart';
-import '../data/providers.dart';
-import '../data/server_implementation.dart';
+import '../../colors.dart';
 
 
 class WebAppBar extends ConsumerStatefulWidget {

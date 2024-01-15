@@ -2,9 +2,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../colors.dart';
-import '../data/providers.dart';
-import '../data/server_implementation.dart';
+import '../../colors.dart';
+import '../../data/providers.dart';
+import '../../data/server_implementation.dart';
 
 editDialog(BuildContext mainContext, int index, TextEditingController durController, TextEditingController startController, TextEditingController endController){
   return showDialog(

@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import '../colors.dart';
 import '../data/server_implementation.dart';
 import 'mobile/main_mobile.dart';
-import 'web_main.dart';
+import 'old/web_main.dart';
 
 class Auth extends StatefulWidget {
   const Auth({super.key});
@@ -165,9 +165,10 @@ class _AuthState extends State<Auth> {
                                     value == 'admitted' ? { 
                                       loginController.clear(), 
                                       passController.clear(),
-                                      isMobile ?
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile())) :
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WebMain()))
+                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile()))
+                                      // isMobile ?
+                                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile())) :
+                                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WebMain()))
                                     } : { messenger._toast('доступ запрещен') };
                                 });
                               },

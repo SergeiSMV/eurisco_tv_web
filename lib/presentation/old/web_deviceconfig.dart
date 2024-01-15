@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 
-import '../colors.dart';
-import '../data/providers.dart';
+import '../../colors.dart';
+import '../../data/providers.dart';
 import 'web_editdialog.dart';
-import 'web_fullscreenpreview.dart';
+import '../fullscreenpreview.dart';
 
 class WebDeviceConfig extends ConsumerStatefulWidget {
   const WebDeviceConfig({super.key});
@@ -117,7 +117,7 @@ class _WebDeviceConfigState extends ConsumerState<WebDeviceConfig> {
                                 child: InkWell(
                                   onTap: (){ 
                                     bool isImage = extention == 'mp4' ? false : true;
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,)));
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => FullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,)));
                                     // WebFullScreenPreview(link: deviceConfig[index]['stream'], isImage: isImage,);
                                   },
                                   child: CircleAvatar(

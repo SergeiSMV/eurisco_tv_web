@@ -25,7 +25,7 @@ abstract class ServerRepository{
   // переименовать устройство
   Future<String> renameDevice(String newName, String deviceID);
 
-  // запрос рассылки обновленной конфигурации
-  Future<void> broadcast();
+  // сохранить настройки кофигурации на сервере
+  Future<String> saveConfigSettings(Map newConfig, String deviceID, String content);
 
 }

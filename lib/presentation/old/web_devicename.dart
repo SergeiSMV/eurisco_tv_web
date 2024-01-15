@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../colors.dart';
-import '../data/providers.dart';
-import '../data/server_implementation.dart';
+import '../../colors.dart';
+import '../../data/providers.dart';
+import '../../data/server_implementation.dart';
 
 class WebDeviceName extends ConsumerStatefulWidget {
   const WebDeviceName({super.key});

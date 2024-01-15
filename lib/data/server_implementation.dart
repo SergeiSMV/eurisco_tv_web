@@ -6,6 +6,7 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../domain/server_repository.dart';
 import '../domain/server_values.dart';
+import '../globals.dart';
 import 'hive_implementation.dart';
 import 'providers.dart';
 
@@ -121,16 +122,30 @@ class ServerImpl extends ServerRepository{
     Map authData = await HiveImpl().getAuthData();
     String user = authData['login'];
     var result = await dio.post(serverRenameDevice, queryParameters: {'user': user, 'name': newName, 'device_id': deviceID,});
-    // result.data == 'done' ? broadcast() : null;
     return result.data == 'done' ? 'Имя успешно изменено' : 'Ошибка сохранения';
   }
 
-  // запрос рассылки обновленной конфигурации
+  // сохранить настройки кофигурации на сервере
   @override
-  Future<void> broadcast() async {
+  Future<String> saveConfigSettings(Map newConfig, String deviceID, String content) async {
+    String result;
     Map authData = await HiveImpl().getAuthData();
     String user = authData['login'];
-    await dio.post(serverBroadcast, queryParameters: {'client': user,});
+    newConfig.remove('preview'); newConfig.remove('stream');
+    log.d(newConfig);
+    Map data = {
+      "user": user,
+      "content": content,
+      "device_id": deviceID,
+    };
+    try{
+      // запрос к серверу
+      var responce = await dio.post(serverSaveConfig, queryParameters: {'data': jsonEncode(data), 'config': jsonEncode(newConfig)});
+      result = responce.data == 'done' ? 'Конфигурация успешно сохранена' : 'Ошибка при попытке сохранить конфигурацию';
+    } on DioException catch (_){
+      result = 'Ошибка при попытке сохранить конфигурацию';
+    }
+    return result;
   }
   
 }
