@@ -28,4 +28,7 @@ abstract class ServerRepository{
   // сохранить настройки кофигурации на сервере
   Future<String> saveConfigSettings(Map newConfig, String deviceID, String content);
 
+  // удалить контент
+  Future<void> deleteContent(String content);
+
 }

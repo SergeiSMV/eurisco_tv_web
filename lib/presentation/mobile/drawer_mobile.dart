@@ -147,11 +147,11 @@ Widget drawerMobile(BuildContext mainContext){
                       padding: const EdgeInsets.only(bottom: 10, right: 30),
                       child: InkWell(
                         onTap: () async {
-                          progress?.show();
+                          // progress?.show();
                           Navigator.pop(mainContext);
                           String uploadMessage = await ConfigImpl().uploadFile();
                           messenger._toast(uploadMessage);
-                          progress?.dismiss();
+                          // progress?.dismiss();
                         },
                         child: _drawerButton('добавить файл', Icons.add),
                       ),
@@ -244,7 +244,7 @@ extension on ScaffoldMessengerState {
   void _toast(String message){
     showSnackBar(
       SnackBar(
-        content: Text(message), 
+        content: Text(message, style: white14,), 
         duration: const Duration(seconds: 5),
       )
     );

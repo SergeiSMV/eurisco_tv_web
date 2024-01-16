@@ -29,7 +29,7 @@ Widget dateSettings(BuildContext context, String startHint, String endHint, Func
                 color: Colors.white,
               ),
               height: 45,
-              width: 300,
+              width: double.infinity,
               child: TextField(
                 readOnly: true,
                 keyboardType: TextInputType.number,
@@ -41,7 +41,7 @@ Widget dateSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: startHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFF687797)), child: Icon(Icons.calendar_month)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.calendar_month)),
                   isCollapsed: true
                 ),
                 onTap: () async {
@@ -68,7 +68,7 @@ Widget dateSettings(BuildContext context, String startHint, String endHint, Func
                 color: Colors.white,
               ),
               height: 45,
-              width: 300,
+              width: double.infinity,
               child: TextField(
                 readOnly: true,
                 keyboardType: TextInputType.number,
@@ -80,7 +80,7 @@ Widget dateSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: endHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFF687797)), child: Icon(Icons.calendar_month)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.calendar_month)),
                   isCollapsed: true
                 ),
                 onTap: () async {

@@ -27,6 +27,9 @@ String serverRenameDevice = '$server/rename_device';
 // сохранить конфигурацию
 String serverSaveConfig = '$server/save_config';
 
+// удалить контент
+String serverDeleteContent = '$server/delete_content';
+
 // скачивание файлов
 String getFile = '$server/get_media';
 

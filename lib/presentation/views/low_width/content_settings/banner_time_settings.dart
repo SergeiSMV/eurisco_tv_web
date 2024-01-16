@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../colors.dart';
 
-Widget bannerTimeSettings(String hint){
+Widget bannerTimeSettings(TextEditingController controller, String hint, Function update){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
@@ -21,6 +21,7 @@ Widget bannerTimeSettings(String hint){
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Длительность показа баннера', style: firm14,),
+            Text('Длительность показа баннера', style: firm14,),
             const SizedBox(height: 10,),
             Container(
               decoration: BoxDecoration(
@@ -31,8 +32,9 @@ Widget bannerTimeSettings(String hint){
                 color: Colors.white,
               ),
               height: 45,
-              width: 300,
+              width: double.infinity,
               child: TextField(
+                controller: controller,
                 keyboardType: TextInputType.number,
                 style: firm15,
                 minLines: 1,
@@ -41,11 +43,20 @@ Widget bannerTimeSettings(String hint){
                   border: InputBorder.none,
                   hintStyle: grey15,
                   hintText: hint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFF687797)), child: Icon(Icons.timer)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.timer)),
                   isCollapsed: true
                 ),
-                onChanged: (_){  },
-                onSubmitted: (_) {  },
+                onChanged: (value){
+                  try{
+                    double doubleParse = double.parse(controller.text);
+                    update('duration', doubleParse.toInt());
+                  } catch (_) {
+                    null;
+                  }
+                },
+                onSubmitted: (value) {
+                  
+                },
               ),
             )
           ],

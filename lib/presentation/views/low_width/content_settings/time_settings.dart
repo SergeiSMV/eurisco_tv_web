@@ -29,7 +29,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                 color: Colors.white,
               ),
               height: 45,
-              width: 300,
+              width: double.infinity,
               child: TextField(
                 readOnly: true,
                 keyboardType: TextInputType.number,
@@ -41,7 +41,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: startHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFF687797)), child: Icon(Icons.calendar_month)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.access_time)),
                   isCollapsed: true
                 ),
                 onTap: () async {
@@ -68,7 +68,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                 color: Colors.white,
               ),
               height: 45,
-              width: 300,
+              width: double.infinity,
               child: TextField(
                 readOnly: true,
                 keyboardType: TextInputType.number,
@@ -80,7 +80,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: endHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFF687797)), child: Icon(Icons.calendar_month)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.access_time)),
                   isCollapsed: true
                 ),
                 onTap: () async {
@@ -115,8 +115,7 @@ Future<String> _selectTime(BuildContext context) async {
     },
   );
   if (picked != null){
-    time = '${picked.hour}:${picked.minute}';
-    log.d(picked);
+    time = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
   } else { time = ''; }
   return time;
 }

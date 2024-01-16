@@ -1,9 +1,10 @@
+import 'package:eurisco_tv_web/data/server_implementation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../../../colors.dart';
 
-Widget deleteContent(BuildContext context){
+Widget deleteContent(BuildContext context, String content){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
@@ -18,15 +19,17 @@ Widget deleteContent(BuildContext context){
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Удаление текущего контента. Контент будет безвозвратно удален!', style: firm14,),
+            Text('Удаление текущего контента. Контент будет безвозвратно удален со всех устройств!', style: firm14,),
             Row(
               children: [
                 const Icon(Icons.delete, color: Colors.red, size: 20,),
                 TextButton(
-                  onPressed: (){
-                    Navigator.pop(context);
+                  onPressed: () async {
+                    await confirmDelete(context, content).then((value){
+                      value == 'cancel' ? null : Navigator.pop(context);
+                    });
                   }, 
-                  child: Text('УДАЛИТЬ', style: GoogleFonts.montserrat(color: Colors.red, fontSize: 12, fontWeight: FontWeight.w700),),
+                  child: Text('УДАЛИТЬ', style: GoogleFonts.montserrat(color: Colors.red, fontSize: 12, fontWeight: FontWeight.w600),),
                 )
               ],
             ),
@@ -34,5 +37,40 @@ Widget deleteContent(BuildContext context){
         )
       ),
     ),
+  );
+}
+
+
+confirmDelete(BuildContext context, String content){
+  return showDialog(
+    context: context, 
+    builder: (context){
+      return AlertDialog(
+        title: Text('Вы действительно хотите удалить данный контент со всех устройств?', style: firm14,),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, top: 10, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () { 
+                    Navigator.pop(context, 'delete');
+                    ServerImpl().deleteContent(content);
+                  }, 
+                  child: Text('удалить', style: firm14,)
+                ),
+                TextButton(
+                  onPressed: ()  { 
+                    Navigator.pop(context, 'cancel');
+                  }, 
+                  child: Text('отмена', style: firm14,)
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    }
   );
 }

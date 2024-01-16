@@ -132,7 +132,6 @@ class ServerImpl extends ServerRepository{
     Map authData = await HiveImpl().getAuthData();
     String user = authData['login'];
     newConfig.remove('preview'); newConfig.remove('stream');
-    log.d(newConfig);
     Map data = {
       "user": user,
       "content": content,
@@ -146,6 +145,18 @@ class ServerImpl extends ServerRepository{
       result = 'Ошибка при попытке сохранить конфигурацию';
     }
     return result;
+  }
+
+  // удалить контент
+  @override
+  Future<void> deleteContent(String content) async {
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    try{
+      dio.post(serverDeleteContent, queryParameters: {'user': user, 'content': content});
+    } on DioException catch (_){
+      null;
+    }
   }
   
 }
