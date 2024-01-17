@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import '../../../../colors.dart';
-import '../../../../globals.dart';
+import '../../colors.dart';
 
-Widget timeSettings(BuildContext context, String startHint, String endHint, Function update){
+Widget dateSettings(BuildContext context, String startHint, String endHint, Function update){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      width: double.infinity,
+      width: 500,
       decoration: BoxDecoration(
         color: Colors.white54,
         borderRadius: BorderRadius.circular(5),
@@ -18,7 +18,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Ежедневное время начала показа', style: firm14,),
+            Text('Дата начала показа', style: firm14,),
             const SizedBox(height: 5,),
             Container(
               decoration: BoxDecoration(
@@ -41,13 +41,13 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: startHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.access_time)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.calendar_month)),
                   isCollapsed: true
                 ),
                 onTap: () async {
-                  String result = await _selectTime(context);
+                  String result = await _selectDate(context, startHint);
                   result.isEmpty ? null : {
-                    update('start_time', result)
+                    update('start_date', result)
                   };
                 },
                 onChanged: (_){  },
@@ -57,7 +57,7 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
 
             const SizedBox(height: 10,),
 
-            Text('Ежедневное время окончания показа', style: firm14,),
+            Text('Дата окончания показа', style: firm14,),
             const SizedBox(height: 5,),
             Container(
               decoration: BoxDecoration(
@@ -80,13 +80,13 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
                   border: InputBorder.none,
                   hintStyle: firm15,
                   hintText: endHint,
-                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.access_time)),
+                  prefixIcon: const IconTheme(data: IconThemeData(color: Color(0xFFc4ccfa)), child: Icon(Icons.calendar_month)),
                   isCollapsed: true
                 ),
                 onTap: () async {
-                  String result = await _selectTime(context);
+                  String result = await _selectDate(context, endHint);
                   result.isEmpty ? null : {
-                    update('end_time', result)
+                    update('end_date', result)
                   };
                 },
                 onChanged: (_){  },
@@ -100,25 +100,25 @@ Widget timeSettings(BuildContext context, String startHint, String endHint, Func
   );
 }
 
-Future<String> _selectTime(BuildContext context) async {
+Future<String> _selectDate(BuildContext context, String initDate) async {
+  // DateTime? selectedDate;
 
-  String time;
-  final TimeOfDay? picked = await showTimePicker(
-    initialEntryMode: TimePickerEntryMode.inputOnly,
+  DateFormat format = DateFormat('dd.MM.yyyy');
+  DateTime dateTime = format.parse(initDate);
+
+  String date;
+  final DateTime? picked = await showDatePicker(
     context: context,
-    initialTime: TimeOfDay.now(),
-    builder: (context, child) {
-      return MediaQuery(
-        data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-        child: child!,
-      );
-    },
+    initialDate: dateTime,
+    firstDate: DateTime(2024),
+    lastDate: DateTime(2034),
   );
   if (picked != null){
-    time = '${picked.hour.toString().padLeft(2, '0')}:${picked.minute.toString().padLeft(2, '0')}';
-  } else { time = ''; }
-  return time;
+    date = DateFormat('dd.MM.yyyy').format(picked);
+  } else {
+    date = '';
+  }
+
+  return date;
+
 }
-
-
-

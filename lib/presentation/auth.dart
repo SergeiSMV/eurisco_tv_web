@@ -4,8 +4,7 @@ import 'package:get/get.dart';
 
 import '../colors.dart';
 import '../data/server_implementation.dart';
-import 'mobile/main_mobile.dart';
-import 'old/web_main.dart';
+import 'main_screen.dart';
 
 class Auth extends StatefulWidget {
   const Auth({super.key});
@@ -165,7 +164,7 @@ class _AuthState extends State<Auth> {
                                     value == 'admitted' ? { 
                                       loginController.clear(), 
                                       passController.clear(),
-                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile()))
+                                      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()))
                                       // isMobile ?
                                       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile())) :
                                       // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WebMain()))

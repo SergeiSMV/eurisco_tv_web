@@ -3,7 +3,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../colors.dart';
+import '../../colors.dart';
 
 Widget settingsAppBar(String deviceID, String deviceName, String contentName, String previewLink){
 

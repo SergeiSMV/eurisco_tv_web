@@ -3,13 +3,13 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../../colors.dart';
+import '../../colors.dart';
 
 Widget bannerTimeSettings(TextEditingController controller, String hint, Function update){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      width: double.infinity,
+      width: 500,
       decoration: BoxDecoration(
         color: Colors.white54,
         borderRadius: BorderRadius.circular(5),
@@ -20,7 +20,6 @@ Widget bannerTimeSettings(TextEditingController controller, String hint, Functio
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Длительность показа баннера', style: firm14,),
             Text('Длительность показа баннера', style: firm14,),
             const SizedBox(height: 10,),
             Container(

@@ -1,7 +1,6 @@
 import 'package:eurisco_tv_web/data/config_implementation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../globals.dart';
 import 'server_implementation.dart';
 
 

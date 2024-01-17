@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-import '../../../../colors.dart';
+import '../../colors.dart';
 
 Widget showSettings(bool currentValue, Function update){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      width: double.infinity,
+      width: 500,
       decoration: BoxDecoration(
         color: Colors.white54,
         borderRadius: BorderRadius.circular(5),

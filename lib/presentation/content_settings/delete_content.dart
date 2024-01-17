@@ -2,13 +2,13 @@ import 'package:eurisco_tv_web/data/server_implementation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../colors.dart';
+import '../../colors.dart';
 
 Widget deleteContent(BuildContext context, String content){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
-      width: double.infinity,
+      width: 500,
       decoration: BoxDecoration(
         color: Colors.white54,
         borderRadius: BorderRadius.circular(5),

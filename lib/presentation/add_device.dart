@@ -11,14 +11,17 @@ pinCode(BuildContext context, String pin){
     context: context, 
     builder: (context){
       return AlertDialog(
-        title: Column(
-          children: [
-            Text('Ввведите данный пинкод на устройстве. Данное сообщение не закрывайте, пока устройство не будет подключено!', style: firm12, textAlign: TextAlign.center,),
-            const SizedBox(height: 5),
-            Text('При закрытии сообщения пинкод станет не действительным!', style: red12, textAlign: TextAlign.center,),
-            const SizedBox(height: 15),
-            Text(pin, style: GoogleFonts.montserrat(color: darkFirmColor, fontSize: 30, fontWeight: FontWeight.w700)),
-          ],
+        title: SizedBox(
+          width: 300,
+          child: Column(
+            children: [
+              Text('Ввведите данный пинкод на устройстве. Данное сообщение не закрывайте, пока устройство не будет подключено!', style: firm12, textAlign: TextAlign.center,),
+              const SizedBox(height: 5),
+              Text('При закрытии сообщения пинкод станет не действительным!', style: red12, textAlign: TextAlign.center,),
+              const SizedBox(height: 15),
+              Text(pin, style: GoogleFonts.montserrat(color: darkFirmColor, fontSize: 30, fontWeight: FontWeight.w700)),
+            ],
+          ),
         ),
         actions: [
           Padding(

@@ -4,10 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../colors.dart';
 import '../../../data/providers.dart';
 import '../../../domain/config_model/config_model.dart';
-import '../../../globals.dart';
 import '../../fullscreenpreview.dart';
-import '../../mobile/empty_content.dart';
-import 'content_settings/lw_content_settings.dart';
+import '../../empty_content.dart';
+import '../../content_settings/content_settings.dart';
 
 
 class LowWidthContentView extends ConsumerStatefulWidget {
@@ -162,7 +161,7 @@ class _ContentMobileState extends ConsumerState<LowWidthContentView> {
                             ),
                             IconButton(
                               onPressed: (){
-                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LowWidthContentSettings(
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => ContentSettings(
                                   contentConfig: Map.from(value),
                                   contentName: contentName, 
                                   deviceID: deviceID,

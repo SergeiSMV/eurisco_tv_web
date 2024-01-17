@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../colors.dart';
-import 'drawer_mobile.dart';
+import '../colors.dart';
+import 'drawer.dart';
 
 Widget emptyContent(BuildContext context){
   return Scaffold(
-    drawer: drawerMobile(context),
+    drawer: drawer(context),
     body: Container(
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,

@@ -1,28 +1,27 @@
 import 'package:eurisco_tv_web/data/server_implementation.dart';
-import 'package:eurisco_tv_web/presentation/mobile/drawer_mobile.dart';
+import 'package:eurisco_tv_web/presentation/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
-import '../../colors.dart';
-import '../../data/providers.dart';
-import '../../domain/server_values.dart';
-import '../../globals.dart';
-import 'appbar_mobile.dart';
-import '../views/low_width/lw_content_view.dart';
+import '../colors.dart';
+import '../data/providers.dart';
+import '../domain/server_values.dart';
+import '../globals.dart';
+import 'appbar.dart';
 import 'empty_config.dart';
-import '../views/high_width/hw_content_view.dart';
+import 'contents.dart';
 
-class MainMobile extends ConsumerStatefulWidget {
-  const MainMobile({super.key});
+class MainScreen extends ConsumerStatefulWidget {
+  const MainScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _MainMobileState();
 }
 
-class _MainMobileState extends ConsumerState<MainMobile> {
+class _MainMobileState extends ConsumerState<MainScreen> {
   
   bool isMobile = GetPlatform.isMobile;
   late WebSocketChannel wsCnannel;
@@ -49,6 +48,7 @@ class _MainMobileState extends ConsumerState<MainMobile> {
     final webConfig = ref.watch(getWebConfigProvider);
     // ignore: unused_local_variable
     final messenger = ScaffoldMessenger.of(context);
+    // ignore: unused_local_variable
     double screenWidth = MediaQuery.of(context).size.width;
 
     return ProgressHUD(
@@ -85,19 +85,20 @@ class _MainMobileState extends ConsumerState<MainMobile> {
 
                       return Scaffold(
                         backgroundColor: Colors.white,
-                        appBar: appbarMobile(context, deviceID, deviceName),
-                        drawer: drawerMobile(context),
+                        appBar: appbar(context, deviceID, deviceName),
+                        drawer: drawer(context),
                         body: Container(
                           height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              opacity: 0.1,
+                              opacity: 1,
                               image: AssetImage('lib/images/background.jpg'),
                               fit: BoxFit.cover,
                             ),
                           ),
-                          child: screenWidth > screenWidthParam ? const HighWidthContentView() : const LowWidthContentView()
+                          child: const Contents(),
+                          // child: screenWidth > screenWidthParam ? const HighWidthContentView() : const LowWidthContentView()
                         )
                       );
                     }
