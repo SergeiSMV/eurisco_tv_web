@@ -6,6 +6,7 @@ import '../../../data/providers.dart';
 import '../../../domain/config_model/config_model.dart';
 import '../../fullscreenpreview.dart';
 import '../../mobile/empty_content.dart';
+import '../low_width/content_settings/lw_content_settings.dart';
 
 
 class HighWidthContentView extends ConsumerStatefulWidget {
@@ -41,9 +42,13 @@ class _ContentMobileState extends ConsumerState<HighWidthContentView> {
     return Consumer(
       builder: (context, ref, child){
         final allConfigs = ref.watch(configProvider);
+        final deviceIndex = ref.watch(contentIndexProvider);
 
-        final deviceId = ref.watch(deviceIdProvider);
-        Map deviceConfig = allConfigs[deviceId]['content'];
+        List devices = allConfigs.keys.toList();
+        final deviceID = ref.watch(deviceIdProvider);
+        Map deviceINFO = allConfigs[devices[deviceIndex]];
+        Map deviceConfig = allConfigs[deviceID]['content'];
+        String deviceName = deviceINFO['name'];
 
         return deviceConfig.isEmpty ? emptyContent(context) :
         Padding(
@@ -161,6 +166,12 @@ class _ContentMobileState extends ConsumerState<HighWidthContentView> {
                             ),
                             IconButton(
                               onPressed: (){
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => LowWidthContentSettings(
+                                  contentConfig: Map.from(value),
+                                  contentName: name, 
+                                  deviceID: deviceID,
+                                  deviceName: deviceName,
+                                )));
                                 // editDialog(context, index, durController, startController, endController);
                               }, 
                               icon: Icon(

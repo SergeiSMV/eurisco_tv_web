@@ -6,7 +6,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../domain/server_repository.dart';
 import '../domain/server_values.dart';
-import '../globals.dart';
 import 'hive_implementation.dart';
 import 'providers.dart';
 
@@ -154,6 +153,33 @@ class ServerImpl extends ServerRepository{
     String user = authData['login'];
     try{
       dio.post(serverDeleteContent, queryParameters: {'user': user, 'content': content});
+    } on DioException catch (_){
+      null;
+    }
+  }
+
+  // запросить pin код для добавления устройства
+  @override
+  Future<String> getPinCode() async {
+    String result;
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    try{
+      var respoce = await dio.get(serverGetPinCode, queryParameters: {'user': user});
+      result = respoce.data.toString();
+    } on DioException catch (_){
+      result = 'error';
+    }
+    return result;
+  }
+
+  // удалить запрошенный pin код
+  @override
+  Future<void> delPinCode(String pin) async {
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    try{
+      await dio.get(serverDelPinCode, queryParameters: {'user': user, 'pin': pin});
     } on DioException catch (_){
       null;
     }

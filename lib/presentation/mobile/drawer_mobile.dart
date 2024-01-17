@@ -1,3 +1,5 @@
+import 'package:eurisco_tv_web/data/server_implementation.dart';
+import 'package:eurisco_tv_web/presentation/add_device.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,6 +8,7 @@ import '../../colors.dart';
 import '../../data/config_implementation.dart';
 import '../../data/hive_implementation.dart';
 import '../../data/providers.dart';
+import '../../globals.dart';
 import '../auth.dart';
 
 
@@ -159,7 +162,14 @@ Widget drawerMobile(BuildContext mainContext){
                     Padding(
                       padding: const EdgeInsets.only(bottom: 10, right: 30),
                       child: InkWell(
-                        onTap: (){ Navigator.pop(mainContext); },
+                        onTap: () async { 
+                          ServerImpl().getPinCode().then((value) async {
+                            await pinCode(context, value).then((_){
+                              ServerImpl().delPinCode(value);
+                            });
+                          });
+                          Navigator.pop(mainContext); 
+                        },
                         child: _drawerButton('добавить устройство', Icons.add),
                       ),
                     ),

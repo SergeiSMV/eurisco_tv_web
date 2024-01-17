@@ -31,4 +31,10 @@ abstract class ServerRepository{
   // удалить контент
   Future<void> deleteContent(String content);
 
+  // запросить pin код для добавления устройства
+  Future<String> getPinCode();
+
+  // удалить запрошенный pin код
+  Future<void> delPinCode(String pin);
+
 }

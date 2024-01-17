@@ -162,7 +162,6 @@ class _ContentMobileState extends ConsumerState<LowWidthContentView> {
                             ),
                             IconButton(
                               onPressed: (){
-                                // editDialog(context, index, durController, startController, endController);
                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => LowWidthContentSettings(
                                   contentConfig: Map.from(value),
                                   contentName: contentName, 

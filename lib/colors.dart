@@ -50,7 +50,8 @@ TextStyle white18 = GoogleFonts.montserrat(color: Colors.white, fontSize: 18);
 TextStyle white20 = GoogleFonts.montserrat(color: Colors.white, fontSize: 20);
 TextStyle white22 = GoogleFonts.montserrat(color: Colors.white, fontSize: 22);
 
-
+TextStyle red14 = GoogleFonts.montserrat(color: Colors.red, fontSize: 14);
+TextStyle red12 = GoogleFonts.montserrat(color: Colors.red, fontSize: 12);
 
 /*
 TextStyle firm18 = TextStyle(color: firmColor, fontSize: 18);
