@@ -54,7 +54,14 @@ Widget drawer(BuildContext mainContext){
                 Padding(
                   padding: const EdgeInsets.only(bottom: 10, right: 30),
                   child: InkWell(
-                    onTap: (){ Navigator.pop(mainContext); },
+                    onTap: () async { 
+                      ServerImpl().getPinCode().then((value) async {
+                        await pinCode(context, value).then((_){
+                          ServerImpl().delPinCode(value);
+                        });
+                      });
+                      Navigator.pop(mainContext); 
+                    },
                     child: _drawerButton('добавить устройство', Icons.add),
                   ),
                 ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../colors.dart';
+import '../data/server_implementation.dart';
+import 'add_device.dart';
 import 'drawer.dart';
 
 Widget emptyConfig(BuildContext context){
@@ -36,7 +38,13 @@ Widget emptyConfig(BuildContext context){
             Padding(
               padding: const EdgeInsets.only(left: 35, right: 35),
               child: InkWell(
-                onTap: () { },
+                onTap: () async { 
+                  ServerImpl().getPinCode().then((value) async {
+                    await pinCode(context, value).then((_){
+                      ServerImpl().delPinCode(value);
+                    });
+                  });
+                },
                 child: Container(
                   decoration: BoxDecoration(color: firmColor, borderRadius: BorderRadius.circular(5)),
                   height: 35,

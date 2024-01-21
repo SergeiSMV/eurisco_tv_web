@@ -165,9 +165,6 @@ class _AuthState extends State<Auth> {
                                       loginController.clear(), 
                                       passController.clear(),
                                       Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainScreen()))
-                                      // isMobile ?
-                                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const MainMobile())) :
-                                      // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const WebMain()))
                                     } : { messenger._toast('доступ запрещен') };
                                 });
                               },

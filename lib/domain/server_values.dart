@@ -6,9 +6,6 @@ String ws = 'wss://fluthon.space/develop/ws';
 // главный сервер
 String server = 'https://fluthon.space/develop';
 
-// запрос рассылки обновленной конфигурации
-String serverBroadcast = '$server/broadcast';
-
 // авторизация 
 String serverAuth = '$server/auth';
 
