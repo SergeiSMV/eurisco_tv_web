@@ -2,8 +2,8 @@ import 'package:eurisco_tv_web/data/server_implementation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../colors.dart';
-import '../../data/providers.dart';
+import '../colors.dart';
+import '../data/providers.dart';
 
 renameDevice(BuildContext mainContext, String deviceID){
 

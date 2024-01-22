@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../colors.dart';
 import '../globals.dart';
-import 'mobile/rename_device.dart';
+import 'rename_device.dart';
 
 PreferredSizeWidget appbar(BuildContext context, String deviceID, String deviceName){
   String deviceHint = deviceID == 'общая настройка' ? '' : 'id: ';
