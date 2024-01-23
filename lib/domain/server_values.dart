@@ -27,6 +27,9 @@ String serverSaveConfig = '$server/save_config';
 // удалить контент
 String serverDeleteContent = '$server/delete_content';
 
+// удалить контент
+String serverDeleteDevice = '$server/delete_device';
+
 // запросить pin код для добавления устройства
 String serverGetPinCode = '$server/get_pincode';
 

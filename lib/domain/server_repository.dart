@@ -11,7 +11,7 @@ abstract class ServerRepository{
   Future<Map> getWebConfig();
 
   // сохранить кофигурацию на сервере
-  Future<void> saveConfig(Map newConfig);
+  // Future<void> saveConfig(Map newConfig);
 
   // загрузить файл на сервер
   Future<String> sendFileToServer(FormData formData);
@@ -26,10 +26,13 @@ abstract class ServerRepository{
   Future<String> renameDevice(String newName, String deviceID);
 
   // сохранить настройки кофигурации на сервере
-  Future<String> saveConfigSettings(Map newConfig, String deviceID, String content);
+  Future<String> saveConfigSettings(Map newConfig);
 
   // удалить контент
   Future<void> deleteContent(String content);
+
+  // удалить устройство
+  Future<String> deleteDevice(String deviceID);
 
   // запросить pin код для добавления устройства
   Future<String> getPinCode();

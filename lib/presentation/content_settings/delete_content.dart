@@ -1,10 +1,9 @@
-import 'package:eurisco_tv_web/data/server_implementation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../colors.dart';
 
-Widget deleteContent(BuildContext context, String content){
+Widget deleteContent(BuildContext context, Function deleteContent){
   return Padding(
     padding: const EdgeInsets.only(bottom: 10),
     child: Container(
@@ -22,11 +21,15 @@ Widget deleteContent(BuildContext context, String content){
             Text('Удаление текущего контента. Контент будет безвозвратно удален со всех устройств!', style: firm14,),
             Row(
               children: [
+                const SizedBox(width: 10,),
                 const Icon(Icons.delete, color: Colors.red, size: 20,),
                 TextButton(
                   onPressed: () async {
-                    await confirmDelete(context, content).then((value){
-                      value == 'cancel' ? null : Navigator.pop(context);
+                    await confirmDelete(context).then((value){
+                      value == 'cancel' ? null : {
+                        deleteContent(),
+                        Navigator.pop(context)
+                      };
                     });
                   }, 
                   child: Text('УДАЛИТЬ', style: GoogleFonts.montserrat(color: Colors.red, fontSize: 12, fontWeight: FontWeight.w600),),
@@ -41,7 +44,7 @@ Widget deleteContent(BuildContext context, String content){
 }
 
 
-confirmDelete(BuildContext context, String content){
+confirmDelete(BuildContext context){
   return showDialog(
     context: context, 
     builder: (context){
@@ -56,7 +59,6 @@ confirmDelete(BuildContext context, String content){
                 TextButton(
                   onPressed: () { 
                     Navigator.pop(context, 'delete');
-                    ServerImpl().deleteContent(content);
                   }, 
                   child: Text('удалить', style: firm14,)
                 ),

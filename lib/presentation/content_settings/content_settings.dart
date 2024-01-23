@@ -1,31 +1,26 @@
-import 'package:eurisco_tv_web/data/server_implementation.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
 
 import '../../colors.dart';
+import '../../data/providers.dart';
 import '../../domain/config_model/config_model.dart';
 import '../../globals.dart';
+import 'banner_time_settings.dart';
+import 'date_settings.dart';
 import 'delete_content.dart';
 import 'settings_appbar.dart';
 import 'show_settings.dart';
-import 'date_settings.dart';
-import 'banner_time_settings.dart';
 import 'time_settings.dart';
 
 class ContentSettings extends ConsumerStatefulWidget {
-  final Map<String, dynamic> contentConfig;
+  final Map editConfigs;
   final String contentName;
   final String deviceID;
-  final String deviceName;
-  const ContentSettings({
-    super.key, 
-    required this.contentConfig, 
-    required this.deviceID, 
-    required this.contentName,
-    required this.deviceName
-  });
+  const ContentSettings({super.key, required this.editConfigs, required this.contentName, required this.deviceID});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => _LowWidthContentSettingsState();
@@ -34,14 +29,18 @@ class ContentSettings extends ConsumerStatefulWidget {
 class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
 
   TextEditingController durationController = TextEditingController();
-  late Map<String, dynamic> editConfig;
+  late Map copyEditConfigs;
   late bool mapsEquals;
+  bool changeAllDevice = false;
 
 
   @override
   void initState() {
     super.initState();
-    editConfig = Map.from(widget.contentConfig);
+    // Сериализация и десериализация объектов в widget.editConfigs
+    // создание полной независимой копии
+    String json = jsonEncode(widget.editConfigs);
+    copyEditConfigs = jsonDecode(json);
     mapsEquals = true;
   }
 
@@ -54,21 +53,48 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
 
   void updateConfig(String param, var value) {
     setState(() {
-      editConfig[param] = value;
-      mapsEquals = const DeepCollectionEquality().equals(editConfig, widget.contentConfig);
+      copyEditConfigs[widget.deviceID]['content'][widget.contentName][param] = value;
+      mapsEquals = const DeepCollectionEquality().equals(
+        copyEditConfigs[widget.deviceID]['content'][widget.contentName], 
+        widget.editConfigs[widget.deviceID]['content'][widget.contentName]
+      );
     });
     
   }
 
+  void removeContent() {
+    for(var entry in copyEditConfigs.entries){
+      copyEditConfigs[entry.key]['content'].remove(widget.contentName);
+    }
+    ref.read(editConfigProvider.notifier).state = copyEditConfigs;
+  }
+
+  void updateForAll() {
+    for(var entry in copyEditConfigs.entries){
+      if (entry.key != widget.deviceID){
+        copyEditConfigs[entry.key]['content'][widget.contentName] = copyEditConfigs[widget.deviceID]['content'][widget.contentName];
+        continue;
+      }
+    }
+    ref.read(editConfigProvider.notifier).state = copyEditConfigs;
+  }
+
   @override
   Widget build(BuildContext context) {
-    ConfigModel config = ConfigModel(configModel: editConfig);
+    
+    final deviceIndex = ref.watch(deviceIndexProvider);
+    List allDevices = copyEditConfigs.keys.toList();
+    String deviceID = allDevices[deviceIndex];
+    Map deviceINFO = copyEditConfigs[deviceID];
+    String deviceName = deviceINFO['name'];
+    Map<String, dynamic> targetContent = deviceINFO['content'][widget.contentName];
+
+    // ignore: unused_local_variable
     final messenger = ScaffoldMessenger.of(context);
     String extention = widget.contentName.split('.')[1];
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    String deviceHint = widget.deviceID == 'общая настройка' ? widget.deviceID : 'id: ${widget.deviceID}';
-    String nameHint = widget.deviceName == 'для всех устройств' ? widget.deviceName : 'имя: ${widget.deviceName}';
+    ConfigModel config = ConfigModel(configModel: targetContent);
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -84,6 +110,7 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
+            
             screenWidth > screenWidthParam ? 
             SliverAppBar(
               backgroundColor: Colors.transparent,
@@ -93,7 +120,7 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
                 background: Container(),
               ),
             ) :
-            settingsAppBar(widget.deviceID, widget.deviceName, widget.contentName, config.preview),
+            settingsAppBar(deviceID, deviceName, widget.contentName, config.preview),
       
             SliverToBoxAdapter(
               child: Padding(
@@ -101,7 +128,6 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
                 child: Column(
                   children: <Widget>[
 
-                    
                     screenWidth < screenWidthParam ? const SizedBox.shrink() :
                     Container(
                       height: 200,
@@ -119,8 +145,6 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
                       ),
                       // child: Image.network(config.preview)
                     ),
-
-                    // screenWidth < screenWidthParam ? const SizedBox.shrink() : const SizedBox(height: 20),
 
                     screenWidth < screenWidthParam ? const SizedBox.shrink() :
                     Container(
@@ -140,35 +164,69 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(widget.contentName, style: white13, overflow: TextOverflow.ellipsis),
-                          Text(deviceHint, style: white13, overflow: TextOverflow.ellipsis),
-                          Text(nameHint, style: white13, overflow: TextOverflow.ellipsis),
+                          Text(deviceID, style: white13, overflow: TextOverflow.ellipsis),
+                          Text(deviceName, style: white13, overflow: TextOverflow.ellipsis),
                         ],
                       ),
                     ),
 
-                    screenWidth < screenWidthParam ? const SizedBox.shrink() : const SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
+                    screenWidth < screenWidthParam ? const SizedBox.shrink() : const SizedBox(height: 10),
                     showSettings(config.show, updateConfig),
                     extention == 'mp4' || !config.show ? const SizedBox.shrink() : bannerTimeSettings(durationController, config.duration.toString(), updateConfig),
                     !config.show ? const SizedBox.shrink() : dateSettings(context, config.startDate, config.endDate, updateConfig),
                     !config.show ? const SizedBox.shrink() : timeSettings(context, config.startTime, config.endTime, updateConfig),
-                    deleteContent(context, widget.contentName),
+                    deleteContent(context, removeContent),
+
+                    mapsEquals ? const SizedBox.shrink() : 
+                    
+                    
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Container(
+                        width: 500,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.white54,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                        child: Row(
+                          children: [
+                            const SizedBox(width: 10),
+                            Checkbox(
+                              activeColor: const Color(0xFF96A0B7),
+                              value: changeAllDevice,
+                              onChanged: (bool? newValue) {
+                                setState(() {
+                                  changeAllDevice = newValue!;
+                                });
+                              },
+                            ),
+                            const SizedBox(width: 10,),
+                            Text('применить для всех устройств', style: darkFirm14,)
+                          ],
+                        ),
+                      ),
+                    ),
+
                     mapsEquals ? const SizedBox.shrink() : 
                     InkWell(
                       onTap: () async {
-
-                        String validateResult = dataValidate();
-
+                        String validateResult = dataValidate(targetContent);
                         validateResult == 'ok' ?
-                        await ServerImpl().saveConfigSettings(editConfig, widget.deviceID, widget.contentName).then((value){
-                          messenger._toast(value);
-                          Navigator.pop(context);
-                        }) : messenger._toast(validateResult);
-                        
+                        {
+                          changeAllDevice ? updateForAll() : ref.read(editConfigProvider.notifier).state = copyEditConfigs,
+                          Navigator.pop(context)
+                        } : messenger._toast(validateResult);
+                        // await ServerImpl().saveConfigSettings(editConfig, widget.deviceID, widget.contentName).then((value){
+                        //   messenger._toast(value);
+                        //   Navigator.pop(context);
+                        // }) 
                       },
                       child: Container(
                         decoration: BoxDecoration(color: const Color(0xFF96A0B7), borderRadius: BorderRadius.circular(5)),
-                        height: 40,
+                        height: 35,
                         width: 500,
                         child: Center(child: Text('сохранить', style: white14)),
                       ),
@@ -184,21 +242,21 @@ class _LowWidthContentSettingsState extends ConsumerState<ContentSettings> {
     );
   }
 
-  String dataValidate(){
+  String dataValidate(Map targetContent){
     String validateResult = 'ok';
     DateFormat format = DateFormat("dd.MM.yyyy");
-    int duration = editConfig['duration'] ?? 99999;
-    bool show = editConfig['show'];
+    int duration = targetContent['duration'] ?? 99999;
+    bool show = targetContent['show'];
 
-    String startDateString = editConfig['start_date'];
+    String startDateString = targetContent['start_date'];
     DateTime startDate = format.parse(startDateString);
 
-    String endDateString = editConfig['end_date'];
+    String endDateString = targetContent['end_date'];
     DateTime endDate = format.parse(endDateString);
 
-    String startTimeString = editConfig['start_time'];
+    String startTimeString = targetContent['start_time'];
     TimeOfDay startTime = stringToTimeOfDay(startTimeString);
-    String endTimeString = editConfig['end_time'];
+    String endTimeString = targetContent['end_time'];
     TimeOfDay endTime = stringToTimeOfDay(endTimeString);
     int compire = compareTimeOfDay(startTime, endTime);
 

@@ -129,10 +129,10 @@ Widget drawer(BuildContext mainContext){
                               padding: const EdgeInsets.only(bottom: 10, right: 30),
                               child: InkWell(
                                 onTap: (){
-                                  ref.read(contentIndexProvider.notifier).state = index;
+                                  ref.read(deviceIndexProvider.notifier).state = index;
                                   Navigator.pop(context);
                                 },
-                                child: _drawerDevice(deviceID, deviceName),
+                                child: _drawerDevice(deviceID, deviceName, context, ref),
                               ),
                             );
                           }
@@ -199,9 +199,8 @@ Widget drawer(BuildContext mainContext){
 }
 
 
-Widget _drawerDevice(String device, String name){
-  String deviceHint = device == 'общая настройка' ? '' : 'id: ';
-  String nameHint = name == 'для всех устройств' ? '' : 'имя: ';
+Widget _drawerDevice(String device, String name, BuildContext context, WidgetRef ref){
+  
   return Container(
     decoration: BoxDecoration(
       // color: Colors.white,
@@ -218,12 +217,38 @@ Widget _drawerDevice(String device, String name){
     ),
     child: Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Row(
         children: [
-          Text('$deviceHint$device', style: firm14,),
-          Text('$nameHint$name', style: firm12,),
+          Expanded(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('id: $device', style: firm14,),
+                Text('имя: $name', style: firm12,),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              await confirmDeleteDevice(context).then((value){
+                value == 'cancel' ? null : {
+                  ref.read(deviceIndexProvider.notifier).state = 0,
+                  Navigator.pop(context),
+                  ServerImpl().deleteDevice(device).then((value) {
+                    final messenger = ScaffoldMessenger.of(context);
+                    messenger._toast(value);
+                  }),
+                };
+              });
+            }, 
+            icon: Icon(
+              Icons.delete, 
+              color: firmColor, 
+              size: 23,
+            ),
+            splashRadius: 15, 
+          ),
         ],
       ),
     ),
@@ -251,6 +276,39 @@ Widget _drawerButton(String hint, IconData icon){
       padding: const EdgeInsets.all(8.0),
       child: Text(hint, style: white14,),
     ),
+  );
+}
+
+confirmDeleteDevice(BuildContext context){
+  return showDialog(
+    context: context, 
+    builder: (context){
+      return AlertDialog(
+        title: Text('Вы действительно хотите удалить данное устройство?', style: firm14,),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10, top: 10, right: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  onPressed: () { 
+                    Navigator.pop(context, 'delete');
+                  }, 
+                  child: Text('удалить', style: firm14,)
+                ),
+                TextButton(
+                  onPressed: ()  { 
+                    Navigator.pop(context, 'cancel');
+                  }, 
+                  child: Text('отмена', style: firm14,)
+                ),
+              ],
+            ),
+          )
+        ],
+      );
+    }
   );
 }
 

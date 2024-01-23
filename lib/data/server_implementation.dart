@@ -19,27 +19,6 @@ class ServerImpl extends ServerRepository{
   Future<String> auth(Map authData) async {
     var data = jsonEncode(authData);
     String result;
-
-    // final queryParameters = {'auth_data': data};
-    // var url = Uri.https('fluthon.space', '/develop/auth', queryParameters);
-    // try{
-    //   var response = await http.get(url);
-    //   result = response.statusCode.toString();
-    //   log(result);
-    // } on Exception catch (e){
-    //   result = e.toString();
-    // }
-
-    // var response = await http.get(url);
-    // if (response.statusCode == 200) {
-    //   // result = jsonDecode(response.body.toString());
-    //   result = response.statusCode.toString();
-    //   log(result);
-    // } else {
-    //   result = response.statusCode.toString();
-    //   print('Request failed with status: ${response.statusCode}.');
-    // }
-
     
     try{
       var responce = await dio.get(serverAuth, queryParameters: {'auth_data': data});
@@ -72,18 +51,18 @@ class ServerImpl extends ServerRepository{
   }
 
   // сохранить кофигурацию на сервере
-  @override
-  Future<void> saveConfig(Map newConfig) async {
-    // получаем авторизационные данные из БД
-    Map authData = await HiveImpl().getAuthData();
-    var data = jsonEncode(newConfig);
-    try{
-      // запрос к серверу
-      await dio.get(serverSaveConfig, queryParameters: {'user': authData['login'], 'config': data});
-    } on DioException catch (_){
-      null;
-    }
-  }
+  // @override
+  // Future<void> saveConfig(Map newConfig) async {
+  //   // получаем авторизационные данные из БД
+  //   Map authData = await HiveImpl().getAuthData();
+  //   var data = jsonEncode(newConfig);
+  //   try{
+  //     // запрос к серверу
+  //     await dio.get(serverSaveConfig, queryParameters: {'user': authData['login'], 'config': data});
+  //   } on DioException catch (_){
+  //     null;
+  //   }
+  // }
 
 
   // загрузить файл на сервер
@@ -126,19 +105,14 @@ class ServerImpl extends ServerRepository{
 
   // сохранить настройки кофигурации на сервере
   @override
-  Future<String> saveConfigSettings(Map newConfig, String deviceID, String content) async {
+  Future<String> saveConfigSettings(Map newConfig) async {
     String result;
     Map authData = await HiveImpl().getAuthData();
     String user = authData['login'];
     newConfig.remove('preview'); newConfig.remove('stream');
-    Map data = {
-      "user": user,
-      "content": content,
-      "device_id": deviceID,
-    };
     try{
       // запрос к серверу
-      var responce = await dio.post(serverSaveConfig, queryParameters: {'data': jsonEncode(data), 'config': jsonEncode(newConfig)});
+      var responce = await dio.post(serverSaveConfig, queryParameters: {'user': user, 'config': jsonEncode(newConfig)});
       result = responce.data == 'done' ? 'Конфигурация успешно сохранена' : 'Ошибка при попытке сохранить конфигурацию';
     } on DioException catch (_){
       result = 'Ошибка при попытке сохранить конфигурацию';
@@ -156,6 +130,21 @@ class ServerImpl extends ServerRepository{
     } on DioException catch (_){
       null;
     }
+  }
+
+  // удалить устройство
+  @override
+  Future<String> deleteDevice(String deviceID) async {
+    String result;
+    Map authData = await HiveImpl().getAuthData();
+    String user = authData['login'];
+    try{
+      var responce = await dio.get(serverDeleteDevice, queryParameters: {'user': user, 'device_id': deviceID});
+      result = responce.data == 'done' ? 'Устройство $deviceID успешно удалено' : 'Ошибка при попытке удалить устройство $deviceID';
+    } on DioException catch (_){
+      result = 'Ошибка при попытке удалить устройство $deviceID';
+    }
+    return result;
   }
 
   // запросить pin код для добавления устройства

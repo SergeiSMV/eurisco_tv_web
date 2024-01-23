@@ -1,29 +1,23 @@
-import 'package:eurisco_tv_web/data/server_implementation.dart';
-import 'package:eurisco_tv_web/presentation/drawer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../colors.dart';
 import '../data/providers.dart';
+import '../data/server_implementation.dart';
 import '../domain/server_values.dart';
-import '../globals.dart';
-import 'appbar.dart';
 import 'empty_config.dart';
-import 'contents.dart';
+import 'screen_manager.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _MainMobileState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _NewMainScreenState();
 }
 
-class _MainMobileState extends ConsumerState<MainScreen> {
-  
-  bool isMobile = GetPlatform.isMobile;
+class _NewMainScreenState extends ConsumerState<MainScreen> {
+
   late WebSocketChannel wsCnannel;
 
   @override
@@ -36,92 +30,22 @@ class _MainMobileState extends ConsumerState<MainScreen> {
   @override
   void dispose() async {
     super.dispose();
-    log.d('dispose from MainMobile');
     ServerImpl().websocketDisconnect(wsCnannel);
   }
 
-  
-
   @override
   Widget build(BuildContext context) {
-
-    final webConfig = ref.watch(getWebConfigProvider);
-    // ignore: unused_local_variable
-    final messenger = ScaffoldMessenger.of(context);
-    // ignore: unused_local_variable
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return ProgressHUD(
-      barrierColor: Colors.white.withOpacity(0.7),
-      borderColor: Colors.transparent,
-      // backgroundColor: Colors.transparent,
-      padding: const EdgeInsets.all(20.0),
-      child: Builder(
-        builder: (progressHUDcontext) {
-
-          
-          // ignore: unused_local_variable
-          final progress = ProgressHUD.of(progressHUDcontext);
-
-          return Consumer(
-            builder: (context, ref, child) {
-              return webConfig.when(
-                loading: () => Center(child: CircularProgressIndicator(strokeWidth: 2.0, color: darkFirmColor,)),
-                error: (error, _) => Center(child: Text(error.toString())),
-                data: (data){
-
-                  final allConfigs = ref.watch(configProvider);
-                  
-                  return allConfigs.isEmpty ? emptyConfig(context) :
-                  Builder(
-                    builder: (context) {
-
-                      List devices = allConfigs.keys.toList();
-                      final deviceIndex = ref.watch(contentIndexProvider);
-            
-                      Map deviceINFO = allConfigs[devices[deviceIndex]];
-                      String deviceID = devices[deviceIndex];
-                      String deviceName = deviceINFO['name'];
-
-                      return Scaffold(
-                        backgroundColor: Colors.white,
-                        appBar: appbar(context, deviceID, deviceName),
-                        drawer: drawer(context),
-                        body: Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              opacity: 1,
-                              image: AssetImage('lib/images/background.jpg'),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          child: const Contents(),
-                          // child: screenWidth > screenWidthParam ? const HighWidthContentView() : const LowWidthContentView()
-                        )
-                      );
-                    }
-                  );
-                },  
-              );
-            }
-          );
-        }
-      ),
-    );
-  }
-
-}
-
-extension on ScaffoldMessengerState {
-  // ignore: unused_element
-  void _toast(String message){
-    showSnackBar(
-      SnackBar(
-        content: Text(message), 
-        duration: const Duration(seconds: 4),
-      )
+    return Consumer(
+      builder: (context, ref, child) {
+        return ref.watch(getWebConfigProvider).when(
+          loading: () => Center(child: CircularProgressIndicator(strokeWidth: 2.0, color: darkFirmColor,)),
+          error: (error, _) => Center(child: Text(error.toString())),
+          data: (_){
+            final configs = ref.watch(configProvider);
+            return configs.isEmpty ? emptyConfig(context) : ScreenManager(configs: configs);
+          }
+        );
+      }
     );
   }
 }
