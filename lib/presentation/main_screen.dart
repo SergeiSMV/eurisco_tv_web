@@ -6,6 +6,7 @@ import '../colors.dart';
 import '../data/providers.dart';
 import '../data/server_implementation.dart';
 import '../domain/server_values.dart';
+import '../globals.dart';
 import 'empty_config.dart';
 import 'screen_manager.dart';
 
@@ -18,19 +19,19 @@ class MainScreen extends ConsumerStatefulWidget {
 
 class _NewMainScreenState extends ConsumerState<MainScreen> {
 
-  late WebSocketChannel wsCnannel;
+  // late WebSocketChannel wsChannel;
 
   @override
   void initState() {
     super.initState();
-    wsCnannel = WebSocketChannel.connect(Uri.parse(ws));
-    ServerImpl().websocketConnect(wsCnannel, ref);
+    wsChannel = WebSocketChannel.connect(Uri.parse(ws));
+    ServerImpl().websocketConnect(wsChannel!, ref);
   }
 
   @override
   void dispose() async {
     super.dispose();
-    ServerImpl().websocketDisconnect(wsCnannel);
+    ServerImpl().websocketDisconnect(wsChannel!);
   }
 
   @override

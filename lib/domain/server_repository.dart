@@ -22,6 +22,9 @@ abstract class ServerRepository{
   // отключение от websocket
   Future<void> websocketDisconnect(WebSocketChannel channel);
 
+  // проверить соединение websocket
+  void checkWebsocketConnect();
+
   // переименовать устройство
   Future<String> renameDevice(String newName, String deviceID);
 

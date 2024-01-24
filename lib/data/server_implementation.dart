@@ -6,6 +6,8 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../domain/server_repository.dart';
 import '../domain/server_values.dart';
+import '../globals.dart';
+import '../presentation/js_reload.dart';
 import 'hive_implementation.dart';
 import 'providers.dart';
 
@@ -50,21 +52,6 @@ class ServerImpl extends ServerRepository{
     }
   }
 
-  // сохранить кофигурацию на сервере
-  // @override
-  // Future<void> saveConfig(Map newConfig) async {
-  //   // получаем авторизационные данные из БД
-  //   Map authData = await HiveImpl().getAuthData();
-  //   var data = jsonEncode(newConfig);
-  //   try{
-  //     // запрос к серверу
-  //     await dio.get(serverSaveConfig, queryParameters: {'user': authData['login'], 'config': data});
-  //   } on DioException catch (_){
-  //     null;
-  //   }
-  // }
-
-
   // загрузить файл на сервер
   @override
   Future<String> sendFileToServer(FormData formData) async {
@@ -90,7 +77,23 @@ class ServerImpl extends ServerRepository{
   // отключение от websocket
   @override
   Future<void> websocketDisconnect(WebSocketChannel channel) async {
-    channel.sink.close();
+    try{
+      channel.sink.close();
+    } catch (_){
+      null;
+    }
+  }
+
+  // проверить соединение websocket
+  @override
+  void checkWebsocketConnect() {
+    if (wsChannel?.closeCode != null) {
+      // Соединение закрыто или не открывалось
+      refreshPage();
+    } else {
+        // Соединение возможно открыто
+        null;
+    }
   }
 
   // переименовать устройство
@@ -99,6 +102,7 @@ class ServerImpl extends ServerRepository{
     Map authData = await HiveImpl().getAuthData();
     String user = authData['login'];
     var result = await dio.post(serverRenameDevice, queryParameters: {'user': user, 'name': newName, 'device_id': deviceID,});
+    checkWebsocketConnect();
     return result.data == 'done' ? 'Имя успешно изменено' : 'Ошибка сохранения';
   }
 
@@ -116,6 +120,7 @@ class ServerImpl extends ServerRepository{
     } on DioException catch (_){
       result = 'Ошибка при попытке сохранить конфигурацию. Нет соединения с сервером.';
     }
+    checkWebsocketConnect();
     return result;
   }
 
@@ -129,6 +134,7 @@ class ServerImpl extends ServerRepository{
     } on DioException catch (_){
       null;
     }
+    checkWebsocketConnect();
   }
 
   // удалить устройство
@@ -143,6 +149,7 @@ class ServerImpl extends ServerRepository{
     } on DioException catch (_){
       result = 'Ошибка при попытке удалить устройство $deviceID';
     }
+    checkWebsocketConnect();
     return result;
   }
 
