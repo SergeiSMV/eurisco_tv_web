@@ -83,8 +83,7 @@ class ServerImpl extends ServerRepository{
     channel.sink.add(client);
     channel.stream.listen((value) {
       result = jsonDecode(value);
-      // ignore: unused_result
-      result == 'update' ? ref.refresh(getWebConfigProvider) : null;
+      result == 'update' ? { ref.refresh(getWebConfigProvider) } : null;
     });
   }
 
@@ -115,7 +114,7 @@ class ServerImpl extends ServerRepository{
       var responce = await dio.post(serverSaveConfig, queryParameters: {'user': user, 'config': jsonEncode(newConfig)});
       result = responce.data == 'done' ? 'Конфигурация успешно сохранена' : 'Ошибка при попытке сохранить конфигурацию';
     } on DioException catch (_){
-      result = 'Ошибка при попытке сохранить конфигурацию';
+      result = 'Ошибка при попытке сохранить конфигурацию. Нет соединения с сервером.';
     }
     return result;
   }
